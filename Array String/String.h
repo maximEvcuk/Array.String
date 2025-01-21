@@ -18,6 +18,7 @@ public:
 
 	String(const String& other);
 
+	~String();
 
 	void input() const;
 	void output() const;

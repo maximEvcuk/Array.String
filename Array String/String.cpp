@@ -15,14 +15,21 @@ String::String(size_t size) {
 String::String(const char* initStr) {
 	length = std::strlen(initStr);
 	str = new char[length + 1];
-	std::strcpy(str, initStr);
+	std::copy(initStr, initStr + length, str);
+	str[length] = '\0';
 }
 
 String::String(const String& other) {
 	length = other.length;
 	str = new char[length + 1];
-	std::strcpy(str, other.str);
+	std::copy(other.str, other.str + length, str);
+	str[length] = '\0';
 }
+
+String::~String() {
+	delete[] str;
+}
+
 
 void String::input() const {
 	std::cout << "Enter a  string: " << std::endl;
