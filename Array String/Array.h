@@ -15,8 +15,15 @@ public:
 	~Array();
 
 	void display() const;
+	void fillRandom(int minValue, int maxValue);
 
+	void sort();
+	void resize(size_t newSize);
+	int min() const;
+	int max() const;
 
+private:
+	int customRandom(int minValue, int maxValue);
 };
 
 #endif // ARRAY_H
