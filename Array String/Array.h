@@ -22,6 +22,26 @@ public:
 	int min() const;
 	int max() const;
 
+	Array& operator=(const Array& other);
+
+	Array operator+(const Array& other) const;
+
+	Array& operator+=(const Array& other);
+
+	int operator[](size_t index) const;
+
+	friend std::ostream& operator<<(std::ostream& os, const Array& arr);
+
+	bool operator==(const Array& other) const;
+
+	bool operator!=(const Array& other) const;
+
+	bool operator>(const Array& other) const;
+
+	bool operator<(const Array& other) const;
+
+	Array operator*(const Array& other) const;
+
 private:
 	int customRandom(int minValue, int maxValue);
 };
