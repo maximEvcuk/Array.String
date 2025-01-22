@@ -1,46 +1,62 @@
 #include "String.h"
 
 String::String() {
-	length = 80;
-	str = new char[length + 1];
-	std::memset(str, 0, length + 1);
+    length = 80;
+    str = new char[length + 1];
+    std::memset(str, 0, length + 1);
 }
 
 String::String(size_t size) {
-	length = size;
-	str = new char[length + 1];
-	std::memset(str, 0, length + 1);
+    length = size;
+    str = new char[length + 1];
+    std::memset(str, 0, length + 1);
 }
 
 String::String(const char* initStr) {
-	length = std::strlen(initStr);
-	str = new char[length + 1];
-	std::copy(initStr, initStr + length, str);
-	str[length] = '\0';
+    length = std::strlen(initStr);
+    str = new char[length + 1];
+    std::copy(initStr, initStr + length, str);
+    str[length] = '\0';
 }
 
 String::String(const String& other) {
-	length = other.length;
-	str = new char[length + 1];
-	std::copy(other.str, other.str + length, str);
-	str[length] = '\0';
+    length = other.length;
+    str = new char[length + 1];
+    std::copy(other.str, other.str + length, str);
+    str[length] = '\0';
+}
+
+
+String::String(String&& other) noexcept : str(other.str), length(other.length) {
+	other.str = nullptr;
+	other.length = 0;
+}
+
+
+String& String::operator=(const String& other) {
+    if (this != &other) {
+        delete[] str;
+        length = other.length;
+        str = new char[length + 1];
+        std::copy(other.str, other.str + length, str);
+        str[length] = '\0';
+    }
+    return *this;
+}
+
+String& String::operator=(String&& other) noexcept {
+	if (this != &other) {
+		delete[] str;
+		str = other.str;
+		length = other.length;
+		other.str = nullptr;
+		other.length = 0;
+	}
+	return *this;
 }
 
 String::~String() {
 	delete[] str;
-}
-
-
-
-String& String::operator=(const String& other){
-	if (this != &other) {
-		delete[] str;
-		length = other.length;
-		str = new char[length + 1];
-		std::copy(other.str, other.str + length, str);
-		str[length] = '\0';
-	}
-	return *this;
 }
 
 String String::operator+(const String& other) const{
