@@ -1,20 +1,39 @@
-
 #include "Array.h"
 #include <cstdlib>
 
 template<typename T>
+class MemoryAllocationException : public std::runtime_error {
+public:
+    MemoryAllocationException() : std::runtime_error("Memory allocation error!") {}
+};
+
+class OutOfBoundsException : public std::out_of_range {
+public:
+    OutOfBoundsException() : std::out_of_range("Index out of bounds!") {}
+};
+
+template<typename T>
 Array<T>::Array(size_t size, size_t initialCapacity) : size(size), capacity(initialCapacity) {
+    if (capacity == 0) {
+        throw MemoryAllocationException();
+    }
     data = new T[capacity];
 }
 
 template<typename T>
 Array<T>::Array(size_t size, T minValue, T maxValue) : size(size), capacity(size) {
+    if (capacity == 0) {
+        throw MemoryAllocationException();
+    }
     data = new T[capacity];
     fillRandom(minValue, maxValue);
 }
 
 template<typename T>
 Array<T>::Array(const Array& other) : size(other.size), capacity(other.capacity) {
+    if (capacity == 0) {
+        throw MemoryAllocationException();
+    }
     data = new T[capacity];
     for (size_t i = 0; i < size; ++i) {
         data[i] = other.data[i];
@@ -76,6 +95,7 @@ void Array<T>::sort() {
 
 template<typename T>
 T Array<T>::min() const {
+    if (size == 0) throw OutOfBoundsException();
     T minValue = data[0];
     for (size_t i = 1; i < size; ++i) {
         if (data[i] < minValue) {
@@ -87,6 +107,7 @@ T Array<T>::min() const {
 
 template<typename T>
 T Array<T>::max() const {
+    if (size == 0) throw OutOfBoundsException();
     T maxValue = data[0];
     for (size_t i = 1; i < size; ++i) {
         if (data[i] > maxValue) {
@@ -117,12 +138,13 @@ void Array<T>::append(const T& value) {
 
 template<typename T>
 void Array<T>::erase(size_t index){
-    if (index < size){
-        for (size_t i = index; i < size - 1; ++1) {
-            data[i] = data[i + 1];
-        }
-        --size;
+    if (index >= size) {
+        throw OutOfBoundsException();
     }
+    for (size_t i = index; i < size - 1; ++i) {
+        data[i] = data[i + 1];
+    }
+  --size;
 }
 
 template<typename T>
@@ -164,6 +186,9 @@ Array<T>& Array<T>::operator=(const Array& other) {
         delete[] data;
         size = other.size;
         capacity = other.capacity;
+        if (capacity == 0) {
+            throw MemoryAllocationException();
+        }
         data = new T[capacity];
         for (size_t i = 0; i < size; ++i) {
             data[i] = other.data[i];
@@ -209,10 +234,10 @@ Array<T>& Array<T>::operator+=(const Array& other) {
 
 template<typename T>
 T Array<T>::operator[](size_t index) const {
-    if (index < size) {
-        return data[index];
+    if (index >= size) {
+        throw OutOfBoundsException();
     }
-    throw std::out_of_range("Index out of bounds");
+    return data[index];
 }
 
 template<typename T>
