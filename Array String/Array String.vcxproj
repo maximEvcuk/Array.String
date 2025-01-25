@@ -128,11 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
+    <ClInclude Include="ISerializable.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Array.cpp" />
+    <ClCompile Include="ISerializable.cpp" />
     <ClCompile Include="main-A.cpp" />
+    <ClCompile Include="main-I.cpp" />
     <ClCompile Include="main-S.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>

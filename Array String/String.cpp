@@ -70,6 +70,7 @@ String String::operator+(const String& other) const {
     return newString;
 }
 
+
 String& String::operator+=(const String& other) {
     size_t newLength = length + other.length;
     char* newStr = new char[newLength + 1];
@@ -123,4 +124,24 @@ void String::output() const {
 
 size_t String::getLength() const {
 	return length;
+}
+
+
+std::ostream& String::Serialize(std::ostream& output)  {
+    output << length << "\n";
+    output << str;
+    return output;
+}
+
+
+std::istream& String::Deserialize(std::istream& input)  {
+    input >> length;
+    input.ignore();
+    delete[] str;
+    str = new char[length + 1];
+    if (!str)throw std::bad_alloc();
+    input.getline(str, length + 1);
+    return input;
+
+    
 }

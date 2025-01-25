@@ -4,8 +4,9 @@
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
+#include "ISerializable.h"
 
-class String {
+class String :public ISerializable {
 private:
 	char* str;
 	size_t length;
@@ -34,6 +35,10 @@ public:
     void input();
     void output() const;
     size_t getLength() const;
+
+    std::ostream& Serialize(std::ostream& output) override;
+    std::istream& Deserialize(std::istream& input) override;
+
 };
 
 #endif // STRING_H
